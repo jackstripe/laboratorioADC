@@ -1,12 +1,12 @@
-const {saveUserRepo} = require("../repository/courses.repository")
-const {encrypt} = require("../utils/encrypt")
+const {saveUserRepo} = require("../repository/repository")
+const {encryptPwd} = require("../util/util.encrypt")
 
-function saveUserService(user,password){
-    saveUserRepo(user,encrypt(password))
+
+async function saveUserService(user,password){
+    let encPwd = await encryptPwd(password)
+    saveUserRepo(user,encPwd)
     
 }
-
-
 
 module.exports={
     saveUserService

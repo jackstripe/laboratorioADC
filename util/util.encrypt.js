@@ -1,22 +1,27 @@
 const bcrypt = require('bcrypt');
 
 // Hashing a password
-function encrypt(){
-    const saltRounds = 10;
-    const myPlaintextPassword = 'password';
-    bcrypt.hash(myPlaintextPassword, saltRounds, function(err, hash) {
-        // Store hash in your password DB.
-    });
+async function encryptPwd(plaintextPassword){
+    console.log(plaintextPassword );
+    try {
+        const salt = await bcrypt.genSalt(10); // Generate a salt
+        const hashedText = await bcrypt.hash(String(plaintextPassword), salt); // Hash the text using the salt
+        return hashedText; // Return the hashed text
+    } catch (err) {
+        console.log(err);
+        return null; // Return null in case of error
+    }
 }
 
-function validate(){
+function validate(plaintextPassword, hashed){
     // Comparing a password
     const someOtherPlaintextPassword = 'someOtherPassword';
-    bcrypt.compare(someOtherPlaintextPassword, hash, function(err, result) {
-        // result == true or false
+    bcrypt.compare(plaintextPassword, hashed, function(err, result) {
+        return result
     });
 }
 
-modules.export={
-    encrypt
+module.exports={
+    encryptPwd,
+    validate
 }
