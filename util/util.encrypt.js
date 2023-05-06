@@ -13,12 +13,20 @@ async function encryptPwd(plaintextPassword){
     }
 }
 
-function validate(plaintextPassword, hashed){
-    // Comparing a password
-    const someOtherPlaintextPassword = 'someOtherPassword';
-    bcrypt.compare(plaintextPassword, hashed, function(err, result) {
-        return result
-    });
+async function validate(body){
+    console.log("On Validate")
+    plaintextPassword = body.password
+    hashed = body.psswdDB.password
+    console.log(plaintextPassword)
+    console.log(hashed)
+
+    const isValidPassword = await bcrypt.compare(String(plaintextPassword), hashed);
+    console.log(isValidPassword + " On Util")
+    return isValidPassword
+    //bcrypt.compare(String(plaintextPassword), hashed,  function(err, result) {
+    //    console.log(result + "ssd")
+    //    return result
+    //});
 }
 
 module.exports={

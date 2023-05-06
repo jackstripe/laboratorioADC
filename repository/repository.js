@@ -1,24 +1,22 @@
 const {getConnection} = require("../connection/connection")
 
 
-function saveUserRepo(userInsert, encryptedPwd){
+function saveUserRepo(body){
+    let knex = getConnection()
+    return await = knex.insert(body).from('users').returning('uuid')
+}
 
-    let knex = getConnection
-    console.log(knex.select("*").from('user'))
-    knex('user').insert({
-        user: userInsert,
-        password:encryptedPwd
-  })
-  .then(() => {
-    console.log('Data inserted successfully');
-    //knex.destroy(); // Close the database connection
-  })
-  .catch((err) => {
-    console.log(err);
-    //knex.destroy(); // Close the database connection
-  });
+async function retrievePassword(body){
+    let knex = getConnection()
+    const row = await  knex.select('password').from('users').where('username', '=', body.username).first();
+    return row
+    //.then(rows => {
+    //  console.log(rows); 
+    //})
+    
 }
 
 module.exports = {
-  saveUserRepo
+  saveUserRepo,
+  retrievePassword
 }
